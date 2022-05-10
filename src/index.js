@@ -7,11 +7,18 @@ client.on('ready', () => {
   console.log(`${client.user.tag} is ready!`)
 })
 
-client.on('messageCreate', (message) => {
-  const bot = client.user.tag
-  if (message.author.bot) return
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isCommand()) return
 
-  message.reply(`Hello ${message.author}`)
+  const { commandName } = interaction;
+
+  if (commandName === 'ping') {
+    await interaction.reply('Pong!');
+  } else if (commandName === 'server') {
+    await interaction.reply(`Server name: ${interaction.guild.name}\nTotal member: ${interaction.guild.memberCount} \nThis server was built on: ${interaction.guild.createdAt}`)
+  } else if (commandName === 'user') {
+    await interaction.reply(`Your user name is: ${interaction.user.tag}`)
+  }
 })
 
 client.login(token) 
